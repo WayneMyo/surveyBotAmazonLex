@@ -1,0 +1,1638 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "name": "claimQuickBot",
+    "version": "3",
+    "intents": [
+      {
+        "name": "answerSurvey",
+        "version": "3",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:ap-southeast-1:948280517095:function:answerSurveyFunction",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
+        "sampleUtterances": [
+          "I want to answer survey",
+          "take part in a survey"
+        ],
+        "slots": [
+          {
+            "sampleUtterances": [],
+            "slotType": "APPROVE_CLAIM",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Are you an approver or a claimant or both in a typical claim process?"
+                }
+              ],
+              "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"title\":\"Please choose one...\",\"buttons\":[{\"text\":\"Approver\",\"value\":\"Approver\"},{\"text\":\"Claimant\",\"value\":\"Claimant\"},{\"text\":\"Both\",\"value\":\"Both\"}]}]}",
+              "maxAttempts": 2
+            },
+            "priority": 6,
+            "defaultValueSpec": {
+              "defaultValueList": []
+            },
+            "name": "approver_claimant"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "AMAZON.AlphaNumeric",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "If digitised cliam system is available, how beneficial would it be for your company? (0 being no beneficial and 10 being most beneficial)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 12,
+            "name": "beneficial"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "AMAZON.LocalBusinessType",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Please indicate the business nature of your company. (Eg: Engineering, Financial Services, Pharma etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 3,
+            "name": "business_nature"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "CLAIM_COUNT",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "How many claims do you have to submit/process or approve in a month? (Eg: less than 10, around 50 etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 9,
+            "name": "claim_count"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "CLAIM_DURATION",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "How long does it take for the claims to be fully processed? (From applicant submitting the claim to receiving reimbursement. Eg: 1 week, more than 3 weeks etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 8,
+            "name": "claim_duration"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "CLAIM_SYSTEMS",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What is the current claim system in your company? (Eg: paper based, emails, web interface, mobile application etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 7,
+            "name": "claim_systems"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "CLAIM_TYPES",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What kind of claims do you usually have to deal with? (Please add claims or expenses as a surfix to your answer. You can add multiple answers by  using \",\". Eg: Transport claims, Business travel claims etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 5,
+            "name": "claim_types"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "FREE_TEXT_COMPANY_NAMES",
+            "slotTypeVersion": "2",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Would you please indicate the name of your company? (Please add the city your company HQ is residing as a surfix to the answer i.e. ABC Singapore)"
+                },
+                {
+                  "contentType": "PlainText",
+                  "content": "Would you please indicate the name of your company? (Please add the city your company HQ is residing as a surfix to the answer i.e. ABC Singapore)"
+                }
+              ],
+              "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[]}",
+              "maxAttempts": 2
+            },
+            "priority": 1,
+            "defaultValueSpec": {
+              "defaultValueList": []
+            },
+            "name": "company"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "COST_EXPECTATION",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What are your pricing expectations to adopt a digitised claim system? (Eg: USD 500 per month, USD 10000 per year etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 15,
+            "name": "cost_expectations"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "AMAZON.AlphaNumeric",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "How often do you have to deal with claims (either submitting or approving) - 0 being never and 10 being very frequently?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 4,
+            "name": "deal_with_claim"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "DIGITAL_PLATFORM",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "If you chose a digital payment system, may I know which digital payment system you are using? (If no digital payment system, please answer null)"
+                }
+              ],
+              "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[]}",
+              "maxAttempts": 2
+            },
+            "priority": 11,
+            "defaultValueSpec": {
+              "defaultValueList": [
+                {
+                  "defaultValue": "Null"
+                }
+              ]
+            },
+            "name": "digital_payment"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "PAYMENT_TYPE",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What is the payment type in processing claims? (Eg: In cheques, Digital payment systems, Bank transfer etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 10,
+            "name": "payment_type"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "CLAIM_SYSTEMS",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Do you prefer a web interface or a mobile application for a digitised claim system?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 13,
+            "name": "prefered_interface"
+          },
+          {
+            "sampleUtterances": [],
+            "slotType": "REQUIREMENTS",
+            "slotTypeVersion": "1",
+            "obfuscationSetting": "NONE",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Please indicate the requirements for you to adopt a new digitised claim system? (You can add multiple answers by  using \",\". Eg: Cost, compatibality with existing systems etc.)"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 14,
+            "name": "user_requirements"
+          }
+        ],
+        "inputContexts": []
+      },
+      {
+        "rejectionStatement": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "Alright, another time then."
+            }
+          ]
+        },
+        "name": "surveyIntro",
+        "version": "1",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:ap-southeast-1:948280517095:function:triggerSurveyFunction",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
+        "sampleUtterances": [
+          "Hello",
+          "Hi",
+          "Whats up",
+          "Whatsssup",
+          "Hola",
+          "Min ga la par",
+          "Min ga la ba",
+          "Yo",
+          "Hey",
+          "Hait"
+        ],
+        "slots": [],
+        "confirmationPrompt": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "Hello, I'm claimQuick bot. I am a survey bot for claimQuick team and I would like to ask a few questions to you regarding the claim process in your company.  Would you like to take part in a survey?"
+            }
+          ],
+          "maxAttempts": 3
+        },
+        "outputContexts": []
+      }
+    ],
+    "slotTypes": [
+      {
+        "description": "Free text input for company names",
+        "name": "FREE_TEXT_COMPANY_NAMES",
+        "version": "2",
+        "enumerationValues": [
+          {
+            "value": "Padonmar"
+          },
+          {
+            "value": "KTM"
+          },
+          {
+            "value": "Sule Pagoda"
+          },
+          {
+            "value": "Yangon Children Hospital"
+          },
+          {
+            "value": "New Yangon General Hospital"
+          },
+          {
+            "value": "Europe and Asia Commercial Co.,Ltd"
+          },
+          {
+            "value": "Pan Pacific Yangon"
+          },
+          {
+            "value": "Latha Township"
+          },
+          {
+            "value": "Taw Win Centre"
+          },
+          {
+            "value": "Earth Renewable Energy"
+          },
+          {
+            "value": "Earth Industrial Myanmar"
+          },
+          {
+            "value": "HTOO Group Of Companies"
+          },
+          {
+            "value": "Yangon Central Railway Station"
+          },
+          {
+            "value": "MWS Co.,Ltd (Myanmar Web Solution)"
+          },
+          {
+            "value": "H&S photo studio"
+          },
+          {
+            "value": "SEEDS Restaurant & Lounge"
+          },
+          {
+            "value": "Bayin Gyi Electronics"
+          },
+          {
+            "value": "South Okkalapa Township"
+          },
+          {
+            "value": "AYA Bank"
+          },
+          {
+            "value": "Myanmar ComBiz Group"
+          },
+          {
+            "value": "Nissan E-Garage"
+          },
+          {
+            "value": "CarsDB"
+          },
+          {
+            "value": "Viettel Construction Myanmar Co., Ltd"
+          },
+          {
+            "value": "Golden Pagoda Replica"
+          },
+          {
+            "value": "Photo Magic"
+          },
+          {
+            "value": "Citicom"
+          },
+          {
+            "value": "Myo Thein Electronics Bo Aung Kyaw Branch"
+          },
+          {
+            "value": "JJ Express"
+          },
+          {
+            "value": "Modern House Furniture"
+          },
+          {
+            "value": "Novotel Yangon Max"
+          },
+          {
+            "value": "ACE Data Systems"
+          },
+          {
+            "value": "Junction City"
+          },
+          {
+            "value": "Siam Commercial Bank"
+          },
+          {
+            "value": "Aroma Zulu Wedding One Stop Service Center"
+          },
+          {
+            "value": "Lin Win Furniture & Flooring"
+          },
+          {
+            "value": "Shwepyitha Township"
+          },
+          {
+            "value": "Shop.com.mm Yangon Hub"
+          },
+          {
+            "value": "Schneider Electric Myanmar"
+          },
+          {
+            "value": "Sanchaung Township"
+          },
+          {
+            "value": "Shinhan Bank"
+          },
+          {
+            "value": "Hotel Grand United (Ahlone Branch)"
+          },
+          {
+            "value": "Abank"
+          },
+          {
+            "value": "Dagon Township"
+          },
+          {
+            "value": "Aung Yadana Hospital"
+          },
+          {
+            "value": "Pixellion 360"
+          },
+          {
+            "value": "Shanghai Electronics"
+          },
+          {
+            "value": "Sweety Home Living Mall (Yadanar Street)"
+          },
+          {
+            "value": "Hotel Yankin"
+          },
+          {
+            "value": "Myanmar Wedding Guide"
+          },
+          {
+            "value": "Wedding Palace One Stop Wedding Service"
+          },
+          {
+            "value": "Seagram Myanmar Co., Ltd."
+          },
+          {
+            "value": "Green Electronic Store"
+          },
+          {
+            "value": "YBS 77 Bus Terminal"
+          },
+          {
+            "value": "Elegant Pyi Thar Yar Hotel"
+          },
+          {
+            "value": "Yangon Metal Industry Company Limited"
+          },
+          {
+            "value": "Unilever Myanmar SPT Factory"
+          },
+          {
+            "value": "Image Of Myanmar Travel"
+          },
+          {
+            "value": "GTMH Co.,Ltd"
+          },
+          {
+            "value": "Myanmar Seilone"
+          },
+          {
+            "value": "Myint & Associates Telecommunications Ltd."
+          },
+          {
+            "value": "National Tower Development"
+          },
+          {
+            "value": "Myanmar Plaza"
+          },
+          {
+            "value": "Chauk Htat Kyi Pagoda"
+          },
+          {
+            "value": "Yankin Township"
+          },
+          {
+            "value": "OTTO Electronic (Myanmar) Co., Ltd"
+          },
+          {
+            "value": "Together Wedding"
+          },
+          {
+            "value": "SSC â€“ Shwe Gon Daing Hospital"
+          },
+          {
+            "value": "Patrium Bar"
+          },
+          {
+            "value": "Swe Taw Myat Pagoda"
+          },
+          {
+            "value": "Theingi Shweyi Co., Ltd."
+          },
+          {
+            "value": "TECH ACE Computer Store ( Ahlone )"
+          },
+          {
+            "value": "Greenovation Design & Packaging"
+          },
+          {
+            "value": "The Beer Factory Yangon"
+          },
+          {
+            "value": "Thingangyun Township"
+          },
+          {
+            "value": "ABC Telecomm Co., Ltd."
+          },
+          {
+            "value": "CZM services I Advertising Agency in Yangon"
+          },
+          {
+            "value": "Nourish Cafe Yangon"
+          },
+          {
+            "value": "Seoul Myanmar (Thingangyun Branch)"
+          },
+          {
+            "value": "Tamwe Township"
+          },
+          {
+            "value": "Ngar Htat Gyi Pagoda"
+          },
+          {
+            "value": "SIGNATURE Weddings & Events Planning"
+          },
+          {
+            "value": "Myanmar Lacquerware Shop"
+          },
+          {
+            "value": "San Pya General Hospital (Thingangyun)"
+          },
+          {
+            "value": "Abcd"
+          },
+          {
+            "value": "Mingaladon Township"
+          },
+          {
+            "value": "Okkalapa Pagoda"
+          },
+          {
+            "value": "Sule Shangri-La, Yangon"
+          },
+          {
+            "value": "Centure"
+          },
+          {
+            "value": "San Pya Photo Studio"
+          },
+          {
+            "value": "Sinma Furnishings Gallery"
+          },
+          {
+            "value": "Yangon Green Furniture"
+          },
+          {
+            "value": "ZTE Myanmar Co., LTD"
+          },
+          {
+            "value": "Auto Myanmar"
+          },
+          {
+            "value": "HLA DAY"
+          },
+          {
+            "value": "The Market Restaurant"
+          },
+          {
+            "value": "GRAND Furniture"
+          },
+          {
+            "value": "Canon Service center"
+          },
+          {
+            "value": "Hotel Parami"
+          },
+          {
+            "value": "Lovey Dovey"
+          },
+          {
+            "value": "Hlaing Township"
+          },
+          {
+            "value": "\"SENSE\" design.Myanmar"
+          },
+          {
+            "value": "Hotel G Yangon"
+          },
+          {
+            "value": "Gulf Group Of Companies"
+          },
+          {
+            "value": "Alanpya Pagoda"
+          },
+          {
+            "value": "Eclipse Bar"
+          },
+          {
+            "value": "The Manhattan Fish Market"
+          },
+          {
+            "value": "Suzuki YeNadi Motor (Pazundaung)"
+          },
+          {
+            "value": "Global Wave Technology"
+          },
+          {
+            "value": "Servier Myanmar Branch"
+          },
+          {
+            "value": "Enchant Furniture"
+          },
+          {
+            "value": "Master Electronics"
+          },
+          {
+            "value": "ISY Main Campus"
+          },
+          {
+            "value": "MMbusticket - Myanmar Express Bus Ticket"
+          },
+          {
+            "value": "Index Furniture Center (Kabaraye Branch)"
+          },
+          {
+            "value": "Infinity Yangon"
+          },
+          {
+            "value": "Chaw Su Wedding Dress & Photo Studio"
+          },
+          {
+            "value": "Pun Hlaing Siloam Hospital"
+          },
+          {
+            "value": "Sonder"
+          },
+          {
+            "value": "Indian Tadka"
+          },
+          {
+            "value": "Star Bag & Online Store"
+          },
+          {
+            "value": "Aung Mingalar Highway Bus Stop"
+          },
+          {
+            "value": "Mytel"
+          },
+          {
+            "value": "B2HD Gaming PC and High End Workstation"
+          },
+          {
+            "value": "Pyi Myanmar San Construction"
+          },
+          {
+            "value": "Skylark IT Solutions"
+          },
+          {
+            "value": "Capital Taiyo Life Insurance"
+          },
+          {
+            "value": "Sweety Home"
+          },
+          {
+            "value": "Sule Square"
+          },
+          {
+            "value": "Dagon Seikkan Township"
+          },
+          {
+            "value": "Myanmar Tourism Bank"
+          },
+          {
+            "value": "Yangoods"
+          },
+          {
+            "value": "Gekko Restaurant"
+          },
+          {
+            "value": "Best Western Chinatown Hotel"
+          },
+          {
+            "value": "C B Bank"
+          },
+          {
+            "value": "Yangon Excelsior"
+          },
+          {
+            "value": "Karaweik Palace"
+          },
+          {
+            "value": "Lanmadaw Township"
+          },
+          {
+            "value": "Wai Yan Electronics"
+          },
+          {
+            "value": "Myanmar Mahar Htun Co.,Ltd."
+          },
+          {
+            "value": "Thit Sait Bus Stop"
+          },
+          {
+            "value": "Ooredoo"
+          },
+          {
+            "value": "Super Star Wedding Dress"
+          },
+          {
+            "value": "Rose Garden Hotel Yangon"
+          },
+          {
+            "value": "Galaxy Software Co., Ltd"
+          },
+          {
+            "value": "International School of Myanmar, High School"
+          },
+          {
+            "value": "Photo House"
+          },
+          {
+            "value": "Supreme Group of Companies"
+          },
+          {
+            "value": "Asia Yangon Bank"
+          },
+          {
+            "value": "MEDiCARE Myanmar"
+          },
+          {
+            "value": "Kyaik Waing Pagoda"
+          },
+          {
+            "value": "Earth Group of Companies Co.,Ltd (Head Office)"
+          },
+          {
+            "value": "Designer Won Yone"
+          },
+          {
+            "value": "Shinsawpu Pagoda"
+          },
+          {
+            "value": "Horizon Telecom International Co. Ltd."
+          },
+          {
+            "value": "Parami General Hospital"
+          },
+          {
+            "value": "Piano Bar and Grill"
+          },
+          {
+            "value": "Forever One Stop Wedding Service"
+          },
+          {
+            "value": "AA Electronics"
+          },
+          {
+            "value": "Belmond Governor's Residence"
+          },
+          {
+            "value": "Peugeot Myanmar"
+          },
+          {
+            "value": "MeliÃ¡ Yangon"
+          },
+          {
+            "value": "Classic Home Myanmar Factory"
+          },
+          {
+            "value": "Myanmar Pyi San Htar"
+          },
+          {
+            "value": "Jana Mon Ethnic Cuisine"
+          },
+          {
+            "value": "AYA Pay"
+          },
+          {
+            "value": "Shine Construction & Home Decoration"
+          },
+          {
+            "value": "Index Furniture Center (Shwe Gon Daing Branch)"
+          },
+          {
+            "value": "Power Line Electric Company(PLE)"
+          },
+          {
+            "value": "Sinma Furnishings Co., Ltd."
+          },
+          {
+            "value": "Marga Global Telecom Limited"
+          },
+          {
+            "value": "Sedona Hotel Yangon"
+          },
+          {
+            "value": "IIDA ELECTRONICS (MYANMAR) CO., LTD"
+          },
+          {
+            "value": "Sin Yay Twin Bus Stop"
+          },
+          {
+            "value": "Technoland Computer & Mobile, U Chit Maung Street"
+          },
+          {
+            "value": "Kyimyindaing Township"
+          },
+          {
+            "value": "Than Lan Bus Stop"
+          },
+          {
+            "value": "Yangon Vintage Furniture"
+          },
+          {
+            "value": "KMD Computer & Mobile (Pansodan)"
+          },
+          {
+            "value": "B2HD Premium Flagship Computer Store"
+          },
+          {
+            "value": "Pwc"
+          },
+          {
+            "value": "Myanmar Car Market"
+          },
+          {
+            "value": "Knight Myanmar group of Companies"
+          },
+          {
+            "value": "Space Light Electronics Co., Ltd"
+          },
+          {
+            "value": "Myanmar Institute Of Business"
+          },
+          {
+            "value": "CDG (Myanmar) Limited"
+          },
+          {
+            "value": "CB Bank (Sanchaung - Bagayar Road Branch)"
+          },
+          {
+            "value": "SMC"
+          },
+          {
+            "value": "Hyundai Motor Myanmar"
+          },
+          {
+            "value": "Yangon Computer Services"
+          },
+          {
+            "value": "Parami Bus Station"
+          },
+          {
+            "value": "Digital Classic"
+          },
+          {
+            "value": "Esperado Lake View Hotel"
+          },
+          {
+            "value": "Myint Maw Digital Photo Studio"
+          },
+          {
+            "value": "Toyota Aye and Sons (TTAS Co., Ltd.)"
+          },
+          {
+            "value": "ZARNI Electronics"
+          },
+          {
+            "value": "Pyi Lone Chan Thar Pagoda"
+          },
+          {
+            "value": "Go-Myanmar.com"
+          },
+          {
+            "value": "PRO 1 Global Home Center"
+          },
+          {
+            "value": "Kyauk Taw Gyi Pagoda"
+          },
+          {
+            "value": "Myanmar Citizens Bank"
+          },
+          {
+            "value": "NSN E&C Co.ltd"
+          },
+          {
+            "value": "Kodak Express"
+          },
+          {
+            "value": "Top Power"
+          },
+          {
+            "value": "7th Joint Bar & Grill"
+          },
+          {
+            "value": "Blow Hookah Lounge & Grill"
+          },
+          {
+            "value": "Myanmar International School Yangon"
+          },
+          {
+            "value": "K K Myanmar Business Group"
+          },
+          {
+            "value": "Pinlon Hospital"
+          },
+          {
+            "value": "JDS Co., Ltd."
+          },
+          {
+            "value": "Smile Electronic"
+          },
+          {
+            "value": "Win(MWS)"
+          },
+          {
+            "value": "Green Gallery"
+          },
+          {
+            "value": "Feel Myanmar Restaurant 2"
+          },
+          {
+            "value": "Pomelo for Myanmar"
+          },
+          {
+            "value": "Omyanmar Online Shopping Mall"
+          },
+          {
+            "value": "Yangon American International School"
+          },
+          {
+            "value": "Golden Globe Mineral Water Supplier"
+          },
+          {
+            "value": "LOTTE HOTEL YANGON"
+          },
+          {
+            "value": "Pro1"
+          },
+          {
+            "value": "Shwe Taung"
+          },
+          {
+            "value": "Kyauktada Township"
+          },
+          {
+            "value": "Myanma Executive Network Co Ltd. (MEN Co Ltd.))"
+          },
+          {
+            "value": "Nicco Furniture"
+          },
+          {
+            "value": "Mitsubishi Motors Myanmar (MMCM)"
+          },
+          {
+            "value": "HOTEL BALMI"
+          },
+          {
+            "value": "Dawbon Township"
+          },
+          {
+            "value": "Shoes shop Yangon"
+          },
+          {
+            "value": "Myanmar Microfinance Bank"
+          },
+          {
+            "value": "World Wide Myanmar Co., Ltd."
+          },
+          {
+            "value": "Myo Chit Myanmar Trading Co., Ltd."
+          },
+          {
+            "value": "New Image Myanmar Co.,Ltd."
+          },
+          {
+            "value": "Thiri Mingala Kabar Aye Pagoda"
+          },
+          {
+            "value": "Mickey's Real Wood Upcycled Furnitures"
+          },
+          {
+            "value": "Lucky Bird Group of Companies"
+          },
+          {
+            "value": "Atlas Rooftop Bar & Lounge"
+          },
+          {
+            "value": "CDE Company Limited"
+          },
+          {
+            "value": "EDGE Indian Restaurant"
+          },
+          {
+            "value": "Taing Yin Thar Restaurant, Yankin"
+          },
+          {
+            "value": "Sakura Trade Center Co., Ltd."
+          },
+          {
+            "value": "Chatrium Hotel Royal Lake Yangon"
+          },
+          {
+            "value": "Le Planteur Restaurant & Lounge"
+          },
+          {
+            "value": "Grand Hantha Hospital"
+          },
+          {
+            "value": "Yangon International School"
+          },
+          {
+            "value": "Yangon Workers' Hospital"
+          },
+          {
+            "value": "Thaketa Township"
+          },
+          {
+            "value": "Peter the Bridal garden"
+          },
+          {
+            "value": "S&H COMPANY MOVIES HOUSE"
+          },
+          {
+            "value": "Bar 20 Roof Bar"
+          },
+          {
+            "value": "MoeZac Auto"
+          },
+          {
+            "value": "Kamayut Township"
+          },
+          {
+            "value": "freedom bar and restaurant"
+          },
+          {
+            "value": "CAVE"
+          },
+          {
+            "value": "Electronic City"
+          },
+          {
+            "value": "Philippine Embassy in Yangon, Myanmar"
+          },
+          {
+            "value": "Intermediate"
+          },
+          {
+            "value": "MUC"
+          },
+          {
+            "value": "Agrastar Myanmar Company Limited"
+          },
+          {
+            "value": "Hospital"
+          },
+          {
+            "value": "Yangon City Bank Ltd."
+          },
+          {
+            "value": "Kirby Steel Structure - Myanmar Office"
+          },
+          {
+            "value": "Sky Bar"
+          },
+          {
+            "value": "Grand Electronics Center (1)"
+          },
+          {
+            "value": "Shwe Phone Pwint Pagoda"
+          },
+          {
+            "value": "Advance"
+          },
+          {
+            "value": "Consult Myanmar Company Limited"
+          },
+          {
+            "value": "Dow Chemical Myanmar"
+          },
+          {
+            "value": "Everlasting One Stop Wedding Service"
+          },
+          {
+            "value": "MRS Computer & Network"
+          },
+          {
+            "value": "Prestige Automobiles (BMW Myanmar)"
+          },
+          {
+            "value": "Zina Man Aung Pagoda"
+          },
+          {
+            "value": "AGD Bank"
+          },
+          {
+            "value": "Harley-Davidson Service - Yangon, Myanmar"
+          },
+          {
+            "value": "MAXIMUS INTERNATIONAL COMPANY LIMITED"
+          },
+          {
+            "value": "Vinpex Myanmar Co., Ltd"
+          },
+          {
+            "value": "Farm Shop - Myanmar"
+          },
+          {
+            "value": "KBZ Bank"
+          },
+          {
+            "value": "Amethyst Co., Ltd."
+          },
+          {
+            "value": "Image camera and accessories Store II"
+          },
+          {
+            "value": "Junction Square"
+          },
+          {
+            "value": "NaviWorld Myanmar"
+          },
+          {
+            "value": "Dagon Arr Mahn Thit Co., Ltd."
+          },
+          {
+            "value": "Hlaing Company Limited"
+          },
+          {
+            "value": "UMG co.ltd"
+          },
+          {
+            "value": "Rangoon Tea House"
+          },
+          {
+            "value": "MAB Bank"
+          },
+          {
+            "value": "Dora - 2 Photo Lab & Studio"
+          },
+          {
+            "value": "After 8"
+          },
+          {
+            "value": "Basic"
+          },
+          {
+            "value": "Blanca Furniture"
+          },
+          {
+            "value": "Koe Htat Kyee Pagoda"
+          },
+          {
+            "value": "Sakura Hospital"
+          },
+          {
+            "value": "MCM Group of Companies"
+          },
+          {
+            "value": "Naung Daw Gyi Pagoda"
+          },
+          {
+            "value": "Yangon General Hospital"
+          },
+          {
+            "value": "Dior by Heart Wedding Studio"
+          },
+          {
+            "value": "HITACHI SHOWROOM"
+          },
+          {
+            "value": "LinkAge Restaurant & Art Gallery"
+          },
+          {
+            "value": "KS Collection Wedding Planner"
+          },
+          {
+            "value": "Harry's Bar"
+          },
+          {
+            "value": "Myanmar Cappitech Company Ltd"
+          },
+          {
+            "value": "Shinhan Bank Yangon Branch"
+          },
+          {
+            "value": "Mae La Mu Pagoda"
+          },
+          {
+            "value": "Midea Showroom (Myanmar)"
+          },
+          {
+            "value": "Pwint Oo Furniture"
+          },
+          {
+            "value": "K.T.Z Pharmaceutical Company"
+          },
+          {
+            "value": "AA Interiors Myanmar Ltd."
+          },
+          {
+            "value": "PARKROYAL Yangon"
+          },
+          {
+            "value": "Royal Myanmar jewellery & souvenir shop"
+          },
+          {
+            "value": "Chevrolet Myanmar"
+          },
+          {
+            "value": "Yangon"
+          },
+          {
+            "value": "Shwe Sa Bwe"
+          },
+          {
+            "value": "A.T Electronic Centre"
+          },
+          {
+            "value": "Sanctuary Hotel Yangon"
+          },
+          {
+            "value": "Seikkan Township"
+          },
+          {
+            "value": "Yangon Specialist Hospital (500 Bedded)"
+          },
+          {
+            "value": "Peter's Bridal Garden"
+          },
+          {
+            "value": "My Wedding Dream Event Planner"
+          },
+          {
+            "value": "Shwe Dagon Pagoda"
+          },
+          {
+            "value": "Kyike Ka San Pagoda"
+          },
+          {
+            "value": "KIA Myanmar"
+          },
+          {
+            "value": "OK Myanmar (OKM) Group"
+          },
+          {
+            "value": "Botahtaung"
+          },
+          {
+            "value": "Sarkies Bar at The Strand Yangon"
+          },
+          {
+            "value": "Yangon Yangon Rooftop"
+          },
+          {
+            "value": "BARANGOON | the Bar of Rangoon"
+          },
+          {
+            "value": "Wforwedding"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Mode of payment in reimbursing claims",
+        "name": "PAYMENT_TYPE",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Next month pay"
+          },
+          {
+            "value": "K Pay"
+          },
+          {
+            "value": "In salary"
+          },
+          {
+            "value": "AYA Pay"
+          },
+          {
+            "value": "Digital payment platforms"
+          },
+          {
+            "value": "Cash"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "User requirements to adopt a digitised claim system",
+        "name": "REQUIREMENTS",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Intuitive user interface"
+          },
+          {
+            "value": "Easy adoptation"
+          },
+          {
+            "value": "Aftersales support"
+          },
+          {
+            "value": "24hr support"
+          },
+          {
+            "value": "Easy implementation"
+          },
+          {
+            "value": "Cost"
+          },
+          {
+            "value": "Ability to integrate with current systems"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "No. of claims",
+        "name": "CLAIM_COUNT",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "15"
+          },
+          {
+            "value": "Around 10 to 20"
+          },
+          {
+            "value": "Somewhre around 60"
+          },
+          {
+            "value": "20 to 50"
+          },
+          {
+            "value": "Roughly 80"
+          },
+          {
+            "value": "0"
+          },
+          {
+            "value": "100"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "More than 20"
+          },
+          {
+            "value": "90"
+          },
+          {
+            "value": "Less than 5"
+          },
+          {
+            "value": "Less than 10"
+          },
+          {
+            "value": "None"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Types of claims",
+        "name": "CLAIM_TYPES",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Contractor expenses"
+          },
+          {
+            "value": "Medical expenses"
+          },
+          {
+            "value": "Project expenses"
+          },
+          {
+            "value": "Business travel expenses"
+          },
+          {
+            "value": "Contractor claims"
+          },
+          {
+            "value": "Project claims"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Cost expectation for the customer",
+        "name": "COST_EXPECTATION",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "USD 1000 per year"
+          },
+          {
+            "value": "$1000"
+          },
+          {
+            "value": "$10000 per year"
+          },
+          {
+            "value": "10000 Kyat"
+          },
+          {
+            "value": "10000 Kyat per month"
+          },
+          {
+            "value": "SGD 1000 per month"
+          },
+          {
+            "value": "Roughly 500 per month"
+          },
+          {
+            "value": "Around K 10000 per user"
+          },
+          {
+            "value": "Less than $1000 per month"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Digital payment platforms",
+        "name": "DIGITAL_PLATFORM",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "CB Pay"
+          },
+          {
+            "value": "K Pay"
+          },
+          {
+            "value": "AYA Pay"
+          },
+          {
+            "value": "Wave money"
+          },
+          {
+            "value": "KPay"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Approver or Claimant",
+        "name": "APPROVE_CLAIM",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Approver",
+            "synonyms": [
+              "Approver, approver, approve"
+            ]
+          },
+          {
+            "value": "Claimant",
+            "synonyms": [
+              "Claimant, claimant, submitter, submit, claim"
+            ]
+          },
+          {
+            "value": "Both",
+            "synonyms": [
+              "Both, both"
+            ]
+          }
+        ],
+        "valueSelectionStrategy": "TOP_RESOLUTION"
+      },
+      {
+        "description": "Duration for each claim",
+        "name": "CLAIM_DURATION",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Within 1 week"
+          },
+          {
+            "value": "Within 3 weeks"
+          },
+          {
+            "value": "Less than 3 days"
+          },
+          {
+            "value": "Within 1 month"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "Ways user make claims",
+        "name": "CLAIM_SYSTEMS",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Others"
+          },
+          {
+            "value": "Email"
+          },
+          {
+            "value": "Digital Solution (Mobile)"
+          },
+          {
+            "value": "Website"
+          },
+          {
+            "value": "Hardcopy"
+          },
+          {
+            "value": "Mobile application"
+          },
+          {
+            "value": "Softcopy"
+          },
+          {
+            "value": "Phonecall"
+          },
+          {
+            "value": "Viber"
+          },
+          {
+            "value": "Scan & submit via communication platforms - email, Viber, WhatsApp"
+          },
+          {
+            "value": "Digital Solution (Web Interface)"
+          },
+          {
+            "value": "Paper based submissions"
+          },
+          {
+            "value": "I scan the claims and send an email"
+          },
+          {
+            "value": "Internal System"
+          },
+          {
+            "value": "WhatsApp"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      }
+    ],
+    "voiceId": "Salli",
+    "childDirected": false,
+    "locale": "en-US",
+    "idleSessionTTLInSeconds": 300,
+    "clarificationPrompt": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, can you please repeat that?"
+        }
+      ],
+      "maxAttempts": 5
+    },
+    "abortStatement": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, I could not understand. Goodbye."
+        }
+      ]
+    },
+    "detectSentiment": true,
+    "enableModelImprovements": true
+  }
+}
